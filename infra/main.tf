@@ -23,6 +23,7 @@ resource "aws_vpc" "vpc_1" {
 
   tags = {
     Name = "terra-vpc-1"
+    
   }
 }
 
