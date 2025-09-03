@@ -16,4 +16,4 @@ custom:
     cookieDomain: "${custom.prod.cookieDomain}"
     frontUrl: "${custom.prod.frontUrl}"
     backUrl: "${custom.prod.backUrl}"
-    name: p-14044-1
+    name: flatcheese

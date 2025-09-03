@@ -2,6 +2,7 @@ package com.tododuk.global.rq
 
 import com.tododuk.domain.user.entity.User
 import com.tododuk.domain.user.service.UserService
+import com.tododuk.global.app.AppConfig
 import com.tododuk.global.security.SecurityUser
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
@@ -48,28 +49,26 @@ class Rq(
         }
     }
 
-    fun getCookieValue(name: String, defaultValue: String): String {
-        return req.cookies
-            ?.firstOrNull { cookie -> cookie.name == name }
+    fun getCookieValue(name: String, defaultValue: String): String =
+        req.cookies
+            ?.firstOrNull { it.name == name }
             ?.value
             ?.takeIf { it.isNotBlank() }
             ?: defaultValue
-    }
 
-    // apiKey 쿠키 설정
     fun setCookie(name: String, value: String?) {
-        val cookie = Cookie(name, value)
-        cookie.path = "/"
-        cookie.isHttpOnly = true
-
-        if (value.isNullOrBlank()) {
-            cookie.maxAge = 0
+        val cookie = Cookie(name, value ?: "").apply {
+            path = "/"
+            isHttpOnly = true
+            domain = AppConfig.cookieDomain
+            secure = true
+            setAttribute("SameSite", "Strict")
+            maxAge = if (value.isNullOrBlank()) 0 else 60 * 60 * 24 * 365
         }
 
         resp.addCookie(cookie)
     }
 
-    // apiKey가 삭제되는 쿠키 생성
     fun deleteCookie(name: String) {
         setCookie(name, null)
     }
