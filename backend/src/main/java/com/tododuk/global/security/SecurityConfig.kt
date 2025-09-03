@@ -1,5 +1,6 @@
 package com.tododuk.global.security
 
+import com.tododuk.global.app.AppConfig
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -59,6 +60,7 @@ class SecurityConfig(
                     .requestMatchers("/uploads/**").permitAll()
                     // 위 요청 제외 나머지는 로그인 요구
                     .requestMatchers("/api/*/**").authenticated()
+                    .requestMatchers("/actuator/**").permitAll()
                     .anyRequest().authenticated()
             }
             .headers { headers ->
@@ -77,7 +79,7 @@ class SecurityConfig(
                     .authenticationEntryPoint { _, response, _ ->
                         response.contentType = "application/json;charset=UTF-8"
                         // CORS 헤더 추가
-                        response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000")
+                        response.setHeader("Access-Control-Allow-Origin", AppConfig.siteFrontUrl)
                         response.setHeader("Access-Control-Allow-Credentials", "true")
 
                         response.status = HttpServletResponse.SC_UNAUTHORIZED
