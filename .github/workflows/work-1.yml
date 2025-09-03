@@ -1,4 +1,4 @@
-name: "deploy"
+name: work-1
 on:
   push:
     paths:
