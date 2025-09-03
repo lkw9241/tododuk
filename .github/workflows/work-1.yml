@@ -6,6 +6,7 @@ on:
       - 'src/**'
       - 'build.gradle'
       - 'Dockerfile'
+      - 'index.html'
     branches:
       - main
 jobs:
